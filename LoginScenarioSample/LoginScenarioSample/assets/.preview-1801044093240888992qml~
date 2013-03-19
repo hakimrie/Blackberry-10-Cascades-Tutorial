@@ -1,0 +1,61 @@
+// Default empty project template
+import bb.cascades 1.0
+
+TabbedPane {
+    showTabsOnActionBar: true
+    Tab {
+        id: tabLogin
+        NavigationPane {
+            id: navpane
+            Page {
+                onCreationCompleted: {
+                    var page = requestLogin.createObject();
+                    navpane.push(page);
+                }
+            }
+        }
+    }
+    Tab {
+        id: tabnya2
+        enabled: false
+    }
+    Tab {
+        id: tabnya3
+        enabled: false
+        TabContoh {
+        }
+    }
+    onCreationCompleted: {
+    }
+    attachedObjects: [
+        RequestLoginPage {
+            id : requestLogin
+            onLoginSuccess: {
+                tabLogin.enabled = false;
+                tabnya2.enabled = true;
+                tabnya3.enabled = true;
+            }
+        },
+        Page {
+            id: page1
+            ControlDelegate {
+                id: tab1
+                source: "TabContoh.qml"
+            }
+        },
+        Page {
+            id: page2
+            ControlDelegate {
+                id: tab2
+                source: "TabContoh.qml"
+            }
+        },
+        Page {
+            id: page3
+            ControlDelegate {
+                id: tab3
+                source: "TabContoh.qml"
+            }
+        }
+    ]
+}

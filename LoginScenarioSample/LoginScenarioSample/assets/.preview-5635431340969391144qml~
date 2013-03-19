@@ -1,0 +1,83 @@
+import bb.cascades 1.0
+
+Page {
+    Container {
+        ListView {
+            layout: GridListLayout {
+                orientation: LayoutOrientation.TopToBottom
+                columnCount: 9
+                horizontalCellSpacing: 1.0
+                verticalCellSpacing: 0.0
+                spacingBeforeHeader: 1.0
+                spacingAfterHeader: 1.0
+            }
+            dataModel: XmlDataModel {
+                id : dataModel
+                source: "seatmodel.xml"
+            }
+            listItemComponents: [
+                ListItemComponent {
+                    type: "blank"
+                    SeatItemBlank {
+                    }
+                },
+                ListItemComponent {
+                    type: "available"
+                    SeatItemAvailable {
+                    }
+                },
+                ListItemComponent {
+                    type: "notavailable"
+                    SeatItemNotAvailable {
+                    }
+                },
+                ListItemComponent {
+                    type: "seat"
+                    SeatItemAvailable {
+                        seatlabel: ListItemData.code
+                    }
+                },
+                ListItemComponent {
+                    type: "number"
+                    SeatItemBlank {
+                        label: ListItemData.code
+                    }
+                },
+                ListItemComponent {
+                    type: "sayap"
+                    SayapItem {
+                    }
+                },
+                ListItemComponent {
+                    type: "sayapexit"
+                    SayapEmergencyExitItem {
+                    }
+                }
+            ]
+            function itemType(data, indexPath) {
+                if (data.code >= 5 && data.code <= 21) {
+                    return 'number';
+                }
+                if (data.code == 'Z') {
+                    return 'blank';
+                } else if (data.code == 'A' || data.code == 'B' || data.code == 'C' || data.code == 'D' || data.code == 'E' || data.code == 'F') {
+                    return 'seat';
+                } else if (data.code == '-') {
+                    return "notavailable"
+                } else if (data.code == 'S') {
+                    return 'sayap';
+                } else if (data.code == 'T') {
+                    return 'blank'
+                } else if (data.code == 'SX') {
+                    return "sayapexit"
+                }
+            }
+            
+            onTriggered: {
+                var choosenItem = dataModel.data(indexPath);
+                console.log("choosenitem: " + indexPath + " val : " + choosenItem.code);
+            }
+        }
+        
+    }
+}
